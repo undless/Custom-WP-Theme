@@ -1,7 +1,9 @@
 # Custom-WP-Theme
 
 Base for begin a custom WordPress theme.
+
 No CSS (only a reset).
+
 Fork it, Rename it, Style it and Enjoy !
 
 
