@@ -1,9 +1,4 @@
 <?php
-/*
-Template Name: Search Page
-*/
-?>
-<?php
 global $query_string;
 
 $query_args = explode("&", $query_string);
@@ -21,9 +16,7 @@ $search = new WP_Query($search_query);
 
 
 <?php get_header(); ?>
-	<section class="main-section max-width">
 		<h1>Résultats de recherche "<?php echo trim( get_search_query() ); ?>"</h1>
-		<div class="searcheresults-content">
 
 			<?php if($s) {
 				if (have_posts() && !ctype_space($s)) : ?>
@@ -33,9 +26,7 @@ $search = new WP_Query($search_query);
 						$total_results = $wp_query->found_posts;
 					?>
 
-					<h2><?php echo $total_results; ?> Résultat<?php if($total_results > "1") echo "s"; ?> trouvé<?php if($total_results > "1") echo "s"; ?> pour : "<?php echo $s ?>"</h2>
-					<br /><br />
-
+					<?php echo $total_results; ?> Résultat<?php if($total_results > "1") echo "s"; ?> trouvé<?php if($total_results > "1") echo "s"; ?> pour : "<?php echo $s ?>"
 
 				<?php
 					$totalpage = $wp_query->max_num_pages;
@@ -58,14 +49,18 @@ $search = new WP_Query($search_query);
 
 					<?php while (have_posts()) : the_post(); ?>
 
-						<div id="post-<?php the_ID(); ?>" class="searchresult-block">
-							<a class="searchresult-title specialfont-extrabold" href="<?php echo get_permalink(); ?>" target="_blank">
+						
+						<hr />
+						<article id="post-<?php the_ID(); ?>">
+							<a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>">
 								<?php echo preg_replace( '/'.$s.'/iu', '<span class="searchresult-highlight">'.$s.'</span>', get_the_title() );	?>
 							</a>
-							<div class="searchresult-excerpt">
-								<?php echo preg_replace( '/'.$s.'/iu', '<span class="searchresult-highlight">'.$s.'</span>', get_the_excerpt() );	?>
-							</div>
-						</div>
+							<?php echo preg_replace( '/'.$s.'/iu', '<span class="searchresult-highlight">'.$s.'</span>', get_the_excerpt() ); ?>
+
+							<?php the_time('j F Y'); ?> by <?php the_author_posts_link(); ?>
+							<?php the_category(', '); ?>
+							<?php comments_popup_link('Pas de commentaires', '1 Commentaire', '% Commentaires'); ?>
+						</article>
 
 					<?php endwhile; ?>
 
@@ -89,22 +84,12 @@ $search = new WP_Query($search_query);
 				<?php else : ?>
 
 					<?php if (ctype_space($s)) : ?>
-						<h2>La recherche est vide.</h2>
+						La recherche est vide.
 					<?php else : ?>
-						<h2>Aucun résultat. Essayez une recherche différente.</h2>
+						Aucun résultat. Essayez une recherche différente.
 					<?php endif; ?>
 
 				<?php endif;
 			}?>
-		</div>
 
-
-
-
-
-
-
-
-
-	</section>
 <?php get_footer(); ?>
